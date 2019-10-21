@@ -1,7 +1,9 @@
 using System.Collections.Generic;
-
+using System.Linq;
+using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace SideTradeCA.WebApi.Controllers
 {
@@ -19,7 +21,11 @@ namespace SideTradeCA.WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { _connectionString };
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                string[] candidates = connection.Query<string>("SELECT candidate_name FROM code_academy_all.active_candidates").ToArray();
+                return candidates;
+            }
         }
     }
 }
