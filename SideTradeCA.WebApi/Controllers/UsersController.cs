@@ -4,6 +4,7 @@ using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using SideTradeCA.WebApi.Entities;
 
 namespace SideTradeCA.WebApi.Controllers
 {
@@ -19,11 +20,11 @@ namespace SideTradeCA.WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<ActiveCandidate>> Get()
         {
             using (var connection = new NpgsqlConnection(_connectionString))
             {
-                string[] candidates = connection.Query<string>("SELECT candidate_name FROM code_academy_all.active_candidates").ToArray();
+                ActiveCandidate[] candidates = connection.Query<ActiveCandidate>("SELECT * FROM code_academy_all.vw_get_all_users").ToArray();
                 return candidates;
             }
         }

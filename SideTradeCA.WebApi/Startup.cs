@@ -52,6 +52,8 @@ namespace SideTradeCA.WebApi
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
     }
 }
